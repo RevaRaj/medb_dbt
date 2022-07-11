@@ -1,21 +1,24 @@
-
 version: 2
 
 models:
   - name: final
-    description: "A starter dbt model"
+    description: "Final dbt model ready for analysis"
     columns:
-      - name: id
+      - name: call_guid
         description: "The primary key for this table"
-        tests:
+        tests: 
           - unique
           - not_null
+      - name: timestamp_of_call_start
+        description: "The primary key for this table"
+        tests: 
+          - not_null
+          - unique
+      
 
   - name: my_second_dbt_model
     description: "A starter dbt model"
     columns:
       - name: id
         description: "The primary key for this table"
-        tests:
-          - unique
-          - not_null
+        
