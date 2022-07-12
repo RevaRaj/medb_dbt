@@ -1,27 +1,34 @@
 {{ config(materialized='table') }}
 
--- ->> used to convert json to int
 
 with source_data as (
 
-
 SELECT * from {{ref('raw_data')}}
+  
+),
+
+call_stage_data as(
+
+select call_guid, ringing, connected, wrap , ringing + connected + wrap as total_duration_secs
+from {{ref('ring_data')}}  inner join 
+{{ref('connect_data')}} using (call_guid) inner join 
+{{ref('wrap_data')}} using (call_guid)
 
 ),
 
-data2 as(
+all_data as (
 
-    select * from {{ref("channel_data")}}
-
+select *
+from source_data  inner join 
+call_stage_data using (call_guid)
 
 ),
 
-final as (
+final as(
 
-select call_guid,timestamp_of_call_start, pagent_id, total_duration_sec, call_end_reason,  etype
-from source_data inner join 
-data2 using (call_guid)
-where etype is not null
+select * --call_guid, timestamp_of_call_start,pagent_id, call_end_reason, ringing, connected, wrap , 
+from all_data
+order by call_guid
 )
 
 select * from final

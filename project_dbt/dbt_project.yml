@@ -10,6 +10,16 @@ config-version: 2
 
 
 
+vars:
+
+  ring_stage: 'ringing'
+  connect_stage: 'connected'
+  wrap_stage:  'wrap'
+  ring: Ringing
+  connect: Connected
+  wrap: Wrap
+  
+
 # This setting configures which "profile" dbt uses for this project.
 profile: 'postgres_conn'
 
