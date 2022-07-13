@@ -132,13 +132,23 @@ Data transformation using POSTGRESQL in DBT
 
         5)  Check the tests result under project_dbt\target\compiled\project_dbt\models\staging\schema.yml
 
+        6)  For each stage of development push the code to GitHub.
+                -   First check the status, add, commit then push
 
+                
 ######  Commands used :
            
-            ```
-            dbt init    -   Initializes dbt project
-            dbt debug   -   Check for config/dependencies/connection
-            dbt compile -   Used to generate executable files
-            dbt run     -   Runs and produces the required result in DB
-            dbt test    -   Used to run tests
-            ```
+            DBT     -   
+                    ```
+                    dbt init    -   Initializes dbt project
+                    dbt debug   -   Check for config/dependencies/connection
+                    dbt compile -   Used to generate executable files
+                    dbt run     -   Runs and produces the required result in DB
+                    dbt test    -   Used to run tests
+                    ```
+            GitHub  -
+                    ```
+                    git status  -   Checks the status of files that needs to added/commited
+                    git add     -   Add the changed files to staging
+                    git commit -m "commit message" - Captures the current changes in staging
+                    git push    -   Pushes all code into GitHub
