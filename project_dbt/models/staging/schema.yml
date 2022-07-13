@@ -1,7 +1,8 @@
 version: 2
 
+
 models:
-  - name: final
+  - name: full_final_data
     description: "Final dbt model ready for analysis"
     columns:
       - name: call_guid
@@ -9,11 +10,90 @@ models:
         tests: 
           - unique
           - not_null
+
       - name: timestamp_of_call_start
-        description: "The primary key for this table"
+        description: "Time when the call started"
         tests: 
           - not_null
           
-      
+      - name: pagent_id
+        description: "Participating agents id for each call"  
+        tests:
+          - not_null
 
+      - name: call_end_reason
+        description: "Call disconnect reason"  
+        tests:
+          - accepted_values:
+              values: ['Released', 'Unreachable', NULL]
         
+      - name: ringing_duration
+        description: "Call Ringing duration in secs"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: ">= 0"
+          - not_null    
+
+      - name: connected_duration
+        description: "Call Connected duration in secs"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: ">= 0"
+          - not_null
+
+      - name: call_Recording_duration
+        description: "Call CallRecording duration in secs"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: ">= 0"
+          - not_null
+
+      - name: held_duration
+        description: "Call Held duration in secs"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: ">= 0"
+          - not_null
+
+      - name: wrap_duration
+        description: "Call Wrap duration in secs"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: ">= 0"
+          - not_null     
+      
+      - name: delivery_failed_duration
+        description: "Call DeliveryFailed duration in secs"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: ">= 0"
+          - not_null   
+
+      - name: total_duration_secs
+        description: "Total duration of each stage in the call (Ringing,Connected,Wrap)"  
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: "> 0"
+          - not_null
+
+
+
+  - name: event_data
+    description: "Final dbt model ready for analysis"
+    columns:
+      - name: call_guid
+        description: "This key will be used to separate the call stages"
+        tests: 
+          - not_null
+
+      - name: call_type
+        description: "This key will be used to separate the call stages"
+        tests: 
+          - accepted_values:
+              values: ['Ringing', 'Connected','CallRecording','Wrap','Held','DeliveryFailed']
+
+      - name: call_duration
+        description: " Call duration for each stages all together"    
+        tests:
+          - dbt_utils.expression_is_true:  
+              expression: "> 0"
